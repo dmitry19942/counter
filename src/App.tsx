@@ -30,7 +30,8 @@ function App() {
     }
 
     const setButton = () => {
-
+        setCount(startCount)
+        setMaxCount(maxCount)
     }
     // function changeMaxCount(newMaxCountValue: string) {
     //
@@ -52,8 +53,28 @@ function App() {
     }, [count])
 
     useEffect(() => {
+        let maxValueAsString = localStorage.getItem('maxValue')
+        if (maxValueAsString) {
+            let newMaxValue = JSON.parse(maxValueAsString)
+            setMaxCount(newMaxValue)
+        }
+    }, [])
 
-    })
+    useEffect(() => {
+        localStorage.setItem('maxValue', JSON.stringify(maxCount))
+    }, [maxCount])
+
+    useEffect(() => {
+        let startValueAsString = localStorage.getItem('startValue')
+        if (startValueAsString) {
+            let newStartValue = JSON.parse(startValueAsString)
+            setStartCount(newStartValue)
+        }
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem('startValue', JSON.stringify(startCount))
+    }, [startCount])
 
 
     const incButtonDisabled = count === maxCount
@@ -62,21 +83,22 @@ function App() {
     const span = count === maxCount ? 'span-v' : 'span'
 
     const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
-        let newCount = e.currentTarget.value
-        let newCount1 = JSON.parse(newCount)
-        setMaxCount(newCount1)
+        let newCount = JSON.parse(e.currentTarget.value)
+        setMaxCount(newCount)
     }
 
-    const onChangeInputStartValue = (e: ChangeEvent<HTMLInputElement>) => {
-        let newCount = e.currentTarget.value
-        let newCount1 = JSON.parse(newCount)
-        setStartCount(newCount1)
+    const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
+        let newCount = JSON.parse(e.currentTarget.value)
+        setStartCount(newCount)
     }
 
     return (
         <div className="App">
             <div className='div-v'>
-                <Inputs onChange={onChangeMaxValue} onChange1={onChangeInputStartValue} />
+                <Inputs maxValue={maxCount}
+                        onChangeMaxValue={onChangeMaxValue}
+                        startValue={startCount}
+                        onChangeStartValue={onChangeStartValue} />
                 <Button onClick={setButton} />
             </div>
             <div className='div-v'>

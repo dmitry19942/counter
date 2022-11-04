@@ -1,8 +1,10 @@
 import React, {ChangeEvent} from "react";
 
 export type InputsType = {
-    onChange?: (e: ChangeEvent<HTMLInputElement>) => void
-    onChange1?: (e: ChangeEvent<HTMLInputElement>) => void
+    maxValue: number
+    startValue: number
+    onChangeMaxValue?: (e: ChangeEvent<HTMLInputElement>) => void
+    onChangeStartValue?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 
@@ -12,11 +14,11 @@ export function Inputs(props: InputsType) {
             <div style={{height: '180px'}}>
                 <div >
                     <label htmlFor="ml" style={{fontSize: '25px', marginRight: '10px'}}>max value:</label>
-            <input className='input' type="number" id='ml' onChange={props.onChange} />
+            <input className='input' type="number" id='ml' onChange={props.onChangeMaxValue} value={props.maxValue} />
                     </div>
                 <div style={{marginTop: '-5px'}}>
                     <label htmlFor="sv" style={{fontSize: '25px', marginRight: '10px'}}>start value:</label>
-            <input className='input' type="number" id='sv' onChange={props.onChange1}/>
+            <input className='input' type="number" id='sv' onChange={props.onChangeStartValue} value={props.startValue}/>
                     </div>
                 </div>
         </span>
