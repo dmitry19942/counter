@@ -12,31 +12,24 @@ function App() {
     const [maxCount, setMaxCount] = useState(10)
     const [startCount, setStartCount] = useState(0)
 
-    // const [error, setError] = useState<boolean>(false)
+    const [error, setError] = useState<boolean>(false)
+    const [buttonSetDisabled, setButtonSetDisabled] = useState<boolean>(false)
 
-    // const setErrorCallback = () => {
-    //     if(startCount >= maxCount) {
-    //         error && setError(true)
-    //         console.log(error)
-    //     } else {
-    //         setError(false)
-    //     }
-    // }
-
+    useEffect(() => {
+        if(startCount >= maxCount) {
+            setError(true)
+            setButtonSetDisabled(true)
+        } else if(startCount < maxCount) {
+            setError(false)
+            setButtonSetDisabled(false)
+        }
+    }, [startCount, maxCount, error])
 
     const incCount = () => {
         if (count < maxCount) {
             setCount(count + 1)
         }
     }
-
-    // const reset = () => {
-    //     let startCount = localStorage.getItem('startValue')
-    //     if (startCount) {
-    //         let startCountFromStorage = JSON.parse(startCount)
-    //         setCount(startCountFromStorage)
-    //     }
-    // }
 
     const resetCount = () => {
         setCount(startCount)
@@ -46,13 +39,7 @@ function App() {
         setCount(startCount)
         setMaxCount(maxCount)
     }
-    // function changeMaxCount(newMaxCountValue: string) {
-    //
-    //     let MaxValue = JSON.parse(newMaxCountValue)
-    //     if (MaxValue) {
-    //          setMaxCount(MaxValue)
-    //     }
-    // }
+
     useEffect(() => {
         let valueAsString = localStorage.getItem('counterValue')
         if (valueAsString) {
@@ -112,8 +99,11 @@ function App() {
                         onChangeMaxValue={onChangeMaxValue}
                         startValue={startCount}
                         onChangeStartValue={onChangeStartValue}
+                        error={error}
                 />
-                <Button onClick={setButton} />
+                <Button onClick={setButton}
+                        disabled={buttonSetDisabled}
+                />
             </div>
             <div className='div-v'>
                 <Count value={count}
