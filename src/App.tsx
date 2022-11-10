@@ -11,6 +11,19 @@ function App() {
     const [count, setCount] = useState(0)
     const [maxCount, setMaxCount] = useState(10)
     const [startCount, setStartCount] = useState(0)
+
+    // const [error, setError] = useState<boolean>(false)
+
+    // const setErrorCallback = () => {
+    //     if(startCount >= maxCount) {
+    //         error && setError(true)
+    //         console.log(error)
+    //     } else {
+    //         setError(false)
+    //     }
+    // }
+
+
     const incCount = () => {
         if (count < maxCount) {
             setCount(count + 1)
@@ -98,7 +111,8 @@ function App() {
                 <Inputs maxValue={maxCount}
                         onChangeMaxValue={onChangeMaxValue}
                         startValue={startCount}
-                        onChangeStartValue={onChangeStartValue} />
+                        onChangeStartValue={onChangeStartValue}
+                />
                 <Button onClick={setButton} />
             </div>
             <div className='div-v'>
