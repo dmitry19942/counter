@@ -12,18 +12,25 @@ function App() {
     const [maxCount, setMaxCount] = useState(10)
     const [startCount, setStartCount] = useState(0)
 
-    const [error, setError] = useState<boolean>(false)
+    const [errorMaxValue, setErrorMaxValue] = useState<boolean>(false)
+    const [errorStartValue, setErrorStartValue] = useState<boolean>(false)
     const [buttonSetDisabled, setButtonSetDisabled] = useState<boolean>(false)
 
     useEffect(() => {
         if(startCount >= maxCount) {
-            setError(true)
+            setErrorMaxValue(true)
+            setErrorStartValue(true)
             setButtonSetDisabled(true)
-        } else if(startCount < maxCount) {
-            setError(false)
+        } else if (startCount < 0) {
+            setErrorStartValue(true)
+            setButtonSetDisabled(true)
+        }
+        else if(startCount < maxCount) {
+            setErrorMaxValue(false)
+            setErrorStartValue(false)
             setButtonSetDisabled(false)
         }
-    }, [startCount, maxCount, error])
+    }, [startCount, maxCount, errorMaxValue, errorStartValue])
 
     const incCount = () => {
         if (count < maxCount) {
@@ -99,7 +106,8 @@ function App() {
                         onChangeMaxValue={onChangeMaxValue}
                         startValue={startCount}
                         onChangeStartValue={onChangeStartValue}
-                        error={error}
+                        errorMaxValue={errorMaxValue}
+                        errorStartValue={errorStartValue}
                 />
                 <Button onClick={setButton}
                         disabled={buttonSetDisabled}
