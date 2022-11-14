@@ -14,38 +14,36 @@ function App() {
 
     const [errorMaxValue, setErrorMaxValue] = useState<boolean>(false)
     const [errorStartValue, setErrorStartValue] = useState<boolean>(false)
-    const [buttonSetDisabled, setButtonSetDisabled] = useState<boolean>(false)
+    const [buttonSetDisabled, setButtonSetDisabled] = useState<boolean>(true)
+    const [enterSetButton, setEnterSetButton] = useState<boolean>(false)
+    const [incorrectValue, setIncorrectValue] = useState<boolean>(false)
 
     useEffect(() => {
         if(startCount >= maxCount) {
             setErrorMaxValue(true)
             setErrorStartValue(true)
             setButtonSetDisabled(true)
+            setIncorrectValue(true)
         } else if (startCount < 0) {
             setErrorStartValue(true)
             setButtonSetDisabled(true)
-        }
-        else if(startCount < maxCount) {
+            setIncorrectValue(true)
+        } else if(startCount < maxCount) {
             setErrorMaxValue(false)
             setErrorStartValue(false)
             setButtonSetDisabled(false)
+            setIncorrectValue(false)
         }
     }, [startCount, maxCount, errorMaxValue, errorStartValue])
 
-    const incCount = () => {
-        if (count < maxCount) {
-            setCount(count + 1)
+    useEffect(() => {
+        if(!buttonSetDisabled) {
+            setEnterSetButton(true)
+        } else {
+            setEnterSetButton(false)
         }
-    }
+    }, [buttonSetDisabled])
 
-    const resetCount = () => {
-        setCount(startCount)
-    }
-
-    const setButton = () => {
-        setCount(startCount)
-        setMaxCount(maxCount)
-    }
 
     useEffect(() => {
         let valueAsString = localStorage.getItem('counterValue')
@@ -57,6 +55,7 @@ function App() {
 
     useEffect(() => {
         localStorage.setItem('counterValue', JSON.stringify(count))
+        setButtonSetDisabled(true)
     }, [count])
 
     useEffect(() => {
@@ -83,6 +82,21 @@ function App() {
         localStorage.setItem('startValue', JSON.stringify(startCount))
     }, [startCount])
 
+    const incCount = () => {
+        if (count < maxCount) {
+            setCount(count + 1)
+        }
+    }
+
+    const resetCount = () => {
+        setCount(startCount)
+    }
+
+    const setButton = () => {
+        setCount(startCount)
+        setMaxCount(maxCount)
+        setButtonSetDisabled(true)
+    }
 
     const incButtonDisabled = count === maxCount
     const resetButtonDisabled = count === startCount
@@ -116,6 +130,8 @@ function App() {
             <div className='div-v'>
                 <Count value={count}
                        span={span}
+                       incorrectValue={incorrectValue}
+                       enterSetButton={enterSetButton}
                 />
                 <Buttons incCount={incCount}
                          resetCount={resetCount}
