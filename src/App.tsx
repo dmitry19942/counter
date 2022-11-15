@@ -8,7 +8,7 @@ import {Inputs} from "./Inputs";
 function App() {
 
 
-    const [count, setCount] = useState(0)
+    const [count, setCount] = useState(-1)
     const [maxCount, setMaxCount] = useState(10)
     const [startCount, setStartCount] = useState(0)
 
@@ -17,32 +17,57 @@ function App() {
     const [buttonSetDisabled, setButtonSetDisabled] = useState<boolean>(true)
     const [enterSetButton, setEnterSetButton] = useState<boolean>(false)
     const [incorrectValue, setIncorrectValue] = useState<boolean>(false)
+    const [incButtonDisabled, setIncButtonDisabled] = useState<boolean>(false)
+    const [resetButtonDisabled, setResetButtonDisabled] = useState<boolean>(false)
+
 
     useEffect(() => {
-        if(startCount >= maxCount) {
+        if (startCount >= maxCount) {
             setErrorMaxValue(true)
             setErrorStartValue(true)
             setButtonSetDisabled(true)
             setIncorrectValue(true)
-        } else if (startCount < 0) {
+            setIncButtonDisabled(true)
+            setResetButtonDisabled(true)
+        }  else if (startCount < 0) {
             setErrorStartValue(true)
             setButtonSetDisabled(true)
             setIncorrectValue(true)
-        } else if(startCount < maxCount) {
+            setIncButtonDisabled(true)
+            setResetButtonDisabled(true)
+        } else if (startCount < maxCount) {
             setErrorMaxValue(false)
             setErrorStartValue(false)
             setButtonSetDisabled(false)
             setIncorrectValue(false)
         }
-    }, [startCount, maxCount, errorMaxValue, errorStartValue])
+    }, [startCount, maxCount])
 
     useEffect(() => {
-        if(!buttonSetDisabled) {
+        if (!buttonSetDisabled) {
             setEnterSetButton(true)
         } else {
             setEnterSetButton(false)
         }
     }, [buttonSetDisabled])
+
+    useEffect(() => {
+        if (enterSetButton) {
+            setIncButtonDisabled(true)
+            setResetButtonDisabled(true)
+        } else if (count === maxCount) {
+            setIncButtonDisabled(true)
+            setResetButtonDisabled(false)
+        } else if (count !== maxCount) {
+            setIncButtonDisabled(false)
+            setResetButtonDisabled(false)
+        } else if (count === startCount) {
+            setResetButtonDisabled(true)
+            setIncButtonDisabled(false)
+        } else if (count !== startCount) {
+            setResetButtonDisabled(false)
+        }
+    }, [enterSetButton, count, maxCount, startCount])
 
 
     useEffect(() => {
@@ -90,16 +115,16 @@ function App() {
 
     const resetCount = () => {
         setCount(startCount)
+        setResetButtonDisabled(true)
     }
 
     const setButton = () => {
         setCount(startCount)
         setMaxCount(maxCount)
         setButtonSetDisabled(true)
+        setEnterSetButton(false)
+        setResetButtonDisabled(true)
     }
-
-    const incButtonDisabled = count === maxCount
-    const resetButtonDisabled = count === startCount
 
     const span = count === maxCount ? 'span-v' : 'span'
 
