@@ -27,14 +27,14 @@ function App() {
             setErrorStartValue(true)
             setButtonSetDisabled(true)
             setIncorrectValue(true)
-            setIncButtonDisabled(true)
-            setResetButtonDisabled(true)
+            // setIncButtonDisabled(true)
+            // setResetButtonDisabled(true)
         }  else if (startCount < 0) {
             setErrorStartValue(true)
             setButtonSetDisabled(true)
             setIncorrectValue(true)
-            setIncButtonDisabled(true)
-            setResetButtonDisabled(true)
+            // setIncButtonDisabled(true)
+            // setResetButtonDisabled(true)
         } else if (startCount < maxCount) {
             setErrorMaxValue(false)
             setErrorStartValue(false)
@@ -44,6 +44,27 @@ function App() {
     }, [startCount, maxCount])
 
     useEffect(() => {
+        if(maxCount <= 0) {
+            setErrorMaxValue(true)
+        } else if (maxCount > 0 && maxCount > startCount) {
+            setErrorMaxValue(false)
+        }
+    }, [maxCount, startCount])
+
+    useEffect(() => {
+        if(!incorrectValue && !errorStartValue && !errorMaxValue) {
+            setIncButtonDisabled(false)
+            setResetButtonDisabled(false)
+        } else if(incorrectValue) {
+            setIncButtonDisabled(true)
+            setResetButtonDisabled(true)
+        } else if(errorStartValue || errorMaxValue) {
+            setIncButtonDisabled(true)
+            setResetButtonDisabled(true)
+        }
+    }, [incorrectValue, errorStartValue, errorMaxValue])
+
+    useEffect(() => {
         if (!buttonSetDisabled) {
             setEnterSetButton(true)
         } else {
@@ -51,23 +72,24 @@ function App() {
         }
     }, [buttonSetDisabled])
 
+
     useEffect(() => {
         if (enterSetButton) {
             setIncButtonDisabled(true)
             setResetButtonDisabled(true)
-        } else if (count === maxCount) {
+        } else if (count === maxCount && !incorrectValue) {
             setIncButtonDisabled(true)
             setResetButtonDisabled(false)
-        } else if (count !== maxCount) {
+        } else if (count !== maxCount && count !== startCount && !incorrectValue) {
             setIncButtonDisabled(false)
             setResetButtonDisabled(false)
-        } else if (count === startCount) {
+        } else if (count === startCount && !incorrectValue) {
             setResetButtonDisabled(true)
             setIncButtonDisabled(false)
-        } else if (count !== startCount) {
+        } else if (count !== startCount && !incorrectValue) {
             setResetButtonDisabled(false)
         }
-    }, [enterSetButton, count, maxCount, startCount])
+    }, [enterSetButton, count, maxCount, startCount, incorrectValue])
 
 
     useEffect(() => {
