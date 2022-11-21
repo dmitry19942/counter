@@ -7,7 +7,7 @@ export type CountType = {
 }
 
 export function Count (props: CountType) {
-    return(
+    return (
         <span className={props.enterSetButton ? 'span-enter-set-button' : props.incorrectValue ? 'span-incorrect-value' : props.span}>
              { props.enterSetButton ? `Enter values and press 'set'` : props.incorrectValue ? 'Incorrect value' : props.value }
         </span>

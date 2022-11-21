@@ -12,7 +12,6 @@ export type InputsType = {
 
 export function Inputs(props: InputsType) {
 
-
     return (
         <span className='span'>
             <div style={{height: '180px'}}>

@@ -2,7 +2,6 @@
   text-align: center;
   padding: 30px;
   display: flex;
-
   }
 
 .span {
@@ -63,7 +62,7 @@
 
 .button {
   background-color: aqua;
-  width: 70px;
+  width: auto;
   font-size: 30px;
   border-radius: 10px;
   font-weight:bold;
@@ -72,22 +71,13 @@
 
 .button-v {
   background-color: aqua;
-  width: 105px;
+  width: auto;
   font-size: 30px;
   margin-left: 50px;
   border-radius: 10px;
   font-weight:bold;
   border: none;
 }
-
-
-
-/*div-v {*/
-/*  width: 400px;	height: 200px; !* Размеры *!*/
-/*  outline: 2px solid #000; !* Чёрная рамка *!*/
-/*  border: 3px solid #fff; !* Белая рамка *!*/
-/*  border-radius: 10px; !* Радиус скругления *!*/
-/*}*/
 
 .div-v {
   border-radius: 10px;

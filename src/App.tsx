@@ -1,6 +1,5 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import './App.css';
-import {Buttons} from "./Buttons";
 import {Count} from "./Count";
 import {Button} from "./Button";
 import {Inputs} from "./Inputs";
@@ -27,14 +26,10 @@ function App() {
             setErrorStartValue(true)
             setButtonSetDisabled(true)
             setIncorrectValue(true)
-            // setIncButtonDisabled(true)
-            // setResetButtonDisabled(true)
         }  else if (startCount < 0) {
             setErrorStartValue(true)
             setButtonSetDisabled(true)
             setIncorrectValue(true)
-            // setIncButtonDisabled(true)
-            // setResetButtonDisabled(true)
         } else if (startCount < maxCount) {
             setErrorMaxValue(false)
             setErrorStartValue(false)
@@ -151,8 +146,8 @@ function App() {
     const span = count === maxCount ? 'span-v' : 'span'
 
     const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
-        let newCount = JSON.parse(e.currentTarget.value)
-        setMaxCount(newCount)
+            let newCount = JSON.parse(e.currentTarget.value)
+            setMaxCount(newCount)
     }
 
     const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
@@ -170,9 +165,13 @@ function App() {
                         errorMaxValue={errorMaxValue}
                         errorStartValue={errorStartValue}
                 />
-                <Button onClick={setButton}
-                        disabled={buttonSetDisabled}
-                />
+                <div className='div-b'>
+                    <Button className={'button'}
+                            nameButton={'set'}
+                            onClick={setButton}
+                            disabled={buttonSetDisabled}
+                    />
+                </div>
             </div>
             <div className='div-v'>
                 <Count value={count}
@@ -180,11 +179,18 @@ function App() {
                        incorrectValue={incorrectValue}
                        enterSetButton={enterSetButton}
                 />
-                <Buttons incCount={incCount}
-                         resetCount={resetCount}
-                         incButtonDisabled={incButtonDisabled}
-                         resetButtonDisabled={resetButtonDisabled}
-                />
+                <div className='div-b'>
+                    <Button className={'button'}
+                            onClick={incCount}
+                            disabled={incButtonDisabled}
+                            nameButton={'inc'}
+                    />
+                    <Button className={'button-v'}
+                            onClick={resetCount}
+                            disabled={resetButtonDisabled}
+                            nameButton={'reset'}
+                    />
+                </div>
             </div>
         </div>
     );
