@@ -6,7 +6,6 @@ import {Inputs} from "./Inputs";
 
 function App() {
 
-
     const [count, setCount] = useState(-1)
     const [maxCount, setMaxCount] = useState(10)
     const [startCount, setStartCount] = useState(0)
@@ -26,7 +25,7 @@ function App() {
             setErrorStartValue(true)
             setButtonSetDisabled(true)
             setIncorrectValue(true)
-        }  else if (startCount < 0) {
+        } else if (startCount < 0) {
             setErrorStartValue(true)
             setButtonSetDisabled(true)
             setIncorrectValue(true)
@@ -39,7 +38,7 @@ function App() {
     }, [startCount, maxCount])
 
     useEffect(() => {
-        if(maxCount <= 0) {
+        if (maxCount <= 0) {
             setErrorMaxValue(true)
         } else if (maxCount > 0 && maxCount > startCount) {
             setErrorMaxValue(false)
@@ -47,13 +46,13 @@ function App() {
     }, [maxCount, startCount])
 
     useEffect(() => {
-        if(!incorrectValue && !errorStartValue && !errorMaxValue) {
+        if (!incorrectValue && !errorStartValue && !errorMaxValue) {
             setIncButtonDisabled(false)
             setResetButtonDisabled(false)
-        } else if(incorrectValue) {
+        } else if (incorrectValue) {
             setIncButtonDisabled(true)
             setResetButtonDisabled(true)
-        } else if(errorStartValue || errorMaxValue) {
+        } else if (errorStartValue || errorMaxValue) {
             setIncButtonDisabled(true)
             setResetButtonDisabled(true)
         }
@@ -66,7 +65,6 @@ function App() {
             setEnterSetButton(false)
         }
     }, [buttonSetDisabled])
-
 
     useEffect(() => {
         if (enterSetButton) {
@@ -85,7 +83,6 @@ function App() {
             setResetButtonDisabled(false)
         }
     }, [enterSetButton, count, maxCount, startCount, incorrectValue])
-
 
     useEffect(() => {
         let valueAsString = localStorage.getItem('counterValue')
@@ -143,16 +140,12 @@ function App() {
         setResetButtonDisabled(true)
     }
 
-    const span = count === maxCount ? 'span-v' : 'span'
-
     const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
-            let newCount = JSON.parse(e.currentTarget.value)
-            setMaxCount(newCount)
+        setMaxCount(parseInt(e.currentTarget.value))
     }
 
     const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
-        let newCount = JSON.parse(e.currentTarget.value)
-        setStartCount(newCount)
+        setStartCount(parseInt(e.currentTarget.value))
     }
 
     return (
@@ -175,7 +168,7 @@ function App() {
             </div>
             <div className='div-v'>
                 <Count value={count}
-                       span={span}
+                       maxValue={maxCount}
                        incorrectValue={incorrectValue}
                        enterSetButton={enterSetButton}
                 />
