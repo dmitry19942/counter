@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useReducer} from 'react';
+import React, {ChangeEvent, useEffect, useReducer} from 'react';
 import './App.css';
 import {Count} from "./Count";
 import {Button} from "./Button";
@@ -6,10 +6,10 @@ import {Inputs} from "./Inputs";
 import {
     ChangeMaxValueAC,
     ChangeStartValueAC,
-    counterReducer,
-    IncCountAC,
+    counterReducer, EnterSetButtonTitleShowAC, IncAndResetButtonDisabledAC,
+    IncCountAC, MaxValueIsCorrectAC,
     ResetCountAC,
-    SetButtonAC
+    SetButtonAC, StartValueMaxValueIsCorrectAC
 } from "./counter-reducer";
 
 export type CounterStateType = {
@@ -52,53 +52,52 @@ function AppWithReducers() {
     // const [resetButtonDisabled, dispatchToResetButtonDisabled] = useReducer(counterReducer, false)
 
 
-    // useEffect(() => {
-    //     if (counter.startCount >= counter.maxCount) {
-    //         setErrorMaxValue(true)
-    //         setErrorStartValue(true)
-    //         setButtonSetDisabled(true)
-    //         setIncorrectValue(true)
-    //     } else if (counter.startCount < 0) {
-    //         setErrorStartValue(true)
-    //         setButtonSetDisabled(true)
-    //         setIncorrectValue(true)
-    //     } else if (counter.startCount < counter.maxCount) {
-    //         setErrorMaxValue(false)
-    //         setErrorStartValue(false)
-    //         setButtonSetDisabled(false)
-    //         setIncorrectValue(false)
-    //     }
-    // }, [counter.startCount, counter.maxCount])
-    //
-    // useEffect(() => {
-    //     if (counter.maxCount <= 0) {
-    //         setErrorMaxValue(true)
-    //     } else if (counter.maxCount > 0 && counter.maxCount > counter.startCount) {
-    //         setErrorMaxValue(false)
-    //     }
-    // }, [counter.maxCount, counter.startCount])
-    //
-    // useEffect(() => {
-    //     if (!counter.incorrectValue && !counter.errorStartValue && !counter.errorMaxValue) {
-    //         setIncButtonDisabled(false)
-    //         setResetButtonDisabled(false)
-    //     } else if (counter.incorrectValue) {
-    //         setIncButtonDisabled(true)
-    //         setResetButtonDisabled(true)
-    //     } else if (counter.errorStartValue || counter.errorMaxValue) {
-    //         setIncButtonDisabled(true)
-    //         setResetButtonDisabled(true)
-    //     }
-    // }, [counter.incorrectValue, counter.errorStartValue, counter.errorMaxValue])
-    //
-    // useEffect(() => {
-    //     if (!counter.buttonSetDisabled) {
-    //         setEnterSetButton(true)
-    //     } else {
-    //         setEnterSetButton(false)
-    //     }
-    // }, [counter.buttonSetDisabled])
-    //
+    useEffect(() => {
+        if (counter.startCount >= counter.maxCount) {
+            const action = StartValueMaxValueIsCorrectAC(true, true, true, true)
+            dispatchToCounter(action)
+        } else if (counter.startCount < 0) {
+            const action = StartValueMaxValueIsCorrectAC(false, true, true, true)
+            dispatchToCounter(action)
+        } else if (counter.startCount < counter.maxCount) {
+            const action = StartValueMaxValueIsCorrectAC(false, false, false, false)
+            dispatchToCounter(action)
+        }
+    }, [counter.startCount, counter.maxCount])
+
+    useEffect(() => {
+        if (counter.maxCount <= 0) {
+            const action = MaxValueIsCorrectAC(true)
+            dispatchToCounter(action)
+        } else if (counter.maxCount > 0 && counter.maxCount > counter.startCount) {
+            const action = MaxValueIsCorrectAC(false)
+            dispatchToCounter(action)
+        }
+    }, [counter.maxCount, counter.startCount])
+
+    useEffect(() => {
+        if (!counter.incorrectValue && !counter.errorStartValue && !counter.errorMaxValue) {
+            const action = IncAndResetButtonDisabledAC(false, false)
+            dispatchToCounter(action)
+        } else if (counter.incorrectValue) {
+            const action = IncAndResetButtonDisabledAC(true, true)
+            dispatchToCounter(action)
+        } else if (counter.errorStartValue || counter.errorMaxValue) {
+            const action = IncAndResetButtonDisabledAC(true, true)
+            dispatchToCounter(action)
+        }
+    }, [counter.incorrectValue, counter.errorStartValue, counter.errorMaxValue])
+
+    useEffect(() => {
+        if (!counter.buttonSetDisabled) {
+            const action = EnterSetButtonTitleShowAC(true)
+            dispatchToCounter(action)
+        } else {
+            const action = EnterSetButtonTitleShowAC(false)
+            dispatchToCounter(action)
+        }
+    }, [counter.buttonSetDisabled])
+
     // useEffect(() => {
     //     if (counter.enterSetButton) {
     //         setIncButtonDisabled(true)

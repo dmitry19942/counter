@@ -30,7 +30,31 @@ export type SetButtonActionType = {
     resetButtonDisabled: boolean
 }
 
-type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType
+export type StartValueMaxValueIsCorrectActionType = {
+    type: 'START-VALUE-MAX-VALUE-IS-CORRECT',
+    errorMaxValue: boolean,
+    errorStartValue: boolean,
+    buttonSetDisabled: boolean,
+    incorrectValue: boolean
+}
+
+export type MaxValueIsCorrectActionType = {
+    type: 'MAX-VALUE-IS-CORRECT',
+    errorMaxValue: boolean
+}
+
+export type IncAndResetButtonDisabledActionType = {
+    type: 'INC-AND-RESET-BUTTON-DISABLED',
+    incButtonDisabled: boolean,
+    resetButtonDisabled: boolean
+}
+
+export type EnterSetButtonTitleShowActionType = {
+    type: 'ENTER-SET-BUTTON-TITLE-SHOW',
+    enterSetButton: boolean
+}
+
+type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | EnterSetButtonTitleShowActionType
 
 
 export const counterReducer = (state: CounterStateType, action: ActionsType): CounterStateType => {
@@ -49,6 +73,18 @@ export const counterReducer = (state: CounterStateType, action: ActionsType): Co
         }
         case 'SET-BUTTON': {
             return {...state, count: action.count, maxCount: action.maxCount, buttonSetDisabled: true, enterSetButton: false, resetButtonDisabled: true}
+        }
+        case 'START-VALUE-MAX-VALUE-IS-CORRECT': {
+            return {...state, errorMaxValue: action.errorMaxValue, errorStartValue: action.errorStartValue, buttonSetDisabled: action.buttonSetDisabled, incorrectValue: action.incorrectValue}
+        }
+        case 'MAX-VALUE-IS-CORRECT': {
+            return {...state, errorMaxValue: action.errorMaxValue}
+        }
+        case 'INC-AND-RESET-BUTTON-DISABLED': {
+            return {...state, incButtonDisabled: action.incButtonDisabled, resetButtonDisabled: action.resetButtonDisabled }
+        }
+        case 'ENTER-SET-BUTTON-TITLE-SHOW': {
+            return {...state, enterSetButton: action.enterSetButton}
         }
         default:
             return state
@@ -69,4 +105,16 @@ export const ResetCountAC = (count: number, resetButtonDisabled: boolean): Reset
 }
 export const SetButtonAC = (count: number, maxCount: number, buttonSetDisabled: boolean, enterSetButton: boolean, resetButtonDisabled: boolean): SetButtonActionType => {
     return {type: 'SET-BUTTON', count, maxCount, buttonSetDisabled, enterSetButton, resetButtonDisabled}
+}
+export const StartValueMaxValueIsCorrectAC = (errorMaxValue: boolean, errorStartValue: boolean, buttonSetDisabled: boolean, incorrectValue: boolean): StartValueMaxValueIsCorrectActionType => {
+    return {type: 'START-VALUE-MAX-VALUE-IS-CORRECT', errorMaxValue, errorStartValue, buttonSetDisabled, incorrectValue}
+}
+export const MaxValueIsCorrectAC = (errorMaxValue: boolean): MaxValueIsCorrectActionType => {
+    return {type: 'MAX-VALUE-IS-CORRECT', errorMaxValue}
+}
+export const IncAndResetButtonDisabledAC = (incButtonDisabled: boolean, resetButtonDisabled: boolean): IncAndResetButtonDisabledActionType => {
+    return {type: 'INC-AND-RESET-BUTTON-DISABLED', incButtonDisabled, resetButtonDisabled}
+}
+export const EnterSetButtonTitleShowAC = (enterSetButton: boolean): EnterSetButtonTitleShowActionType => {
+    return {type: 'ENTER-SET-BUTTON-TITLE-SHOW', enterSetButton}
 }
