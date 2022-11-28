@@ -54,7 +54,12 @@ export type EnterSetButtonTitleShowActionType = {
     enterSetButton: boolean
 }
 
-type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | EnterSetButtonTitleShowActionType
+export type ResetButtonDisabledActionType = {
+    type: 'RESET-BUTTON-DISABLED',
+    resetButtonDisabled: boolean
+}
+
+type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | EnterSetButtonTitleShowActionType | ResetButtonDisabledActionType
 
 
 export const counterReducer = (state: CounterStateType, action: ActionsType): CounterStateType => {
@@ -85,6 +90,9 @@ export const counterReducer = (state: CounterStateType, action: ActionsType): Co
         }
         case 'ENTER-SET-BUTTON-TITLE-SHOW': {
             return {...state, enterSetButton: action.enterSetButton}
+        }
+        case 'RESET-BUTTON-DISABLED': {
+            return {...state, resetButtonDisabled: action.resetButtonDisabled }
         }
         default:
             return state
@@ -117,4 +125,7 @@ export const IncAndResetButtonDisabledAC = (incButtonDisabled: boolean, resetBut
 }
 export const EnterSetButtonTitleShowAC = (enterSetButton: boolean): EnterSetButtonTitleShowActionType => {
     return {type: 'ENTER-SET-BUTTON-TITLE-SHOW', enterSetButton}
+}
+export const ResetButtonDisabledAC = (resetButtonDisabled: boolean): ResetButtonDisabledActionType => {
+    return {type: 'RESET-BUTTON-DISABLED', resetButtonDisabled}
 }
