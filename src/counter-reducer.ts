@@ -61,8 +61,20 @@ export type ResetButtonDisabledActionType = {
 
 type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | EnterSetButtonTitleShowActionType | ResetButtonDisabledActionType
 
+const initialState: CounterStateType = {
+    count: 0,
+    maxCount: 10,
+    startCount: 0,
+    errorMaxValue: false,
+    errorStartValue: false,
+    buttonSetDisabled: true,
+    enterSetButton: false,
+    incorrectValue: false,
+    incButtonDisabled: false,
+    resetButtonDisabled: false
+}
 
-export const counterReducer = (state: CounterStateType, action: ActionsType): CounterStateType => {
+export const counterReducer = (state: CounterStateType = initialState, action: ActionsType): CounterStateType => {
     switch (action.type) {
         case 'INC-COUNT': {
             return {...state, count: action.count + 1}
