@@ -1,7 +1,8 @@
-import {CounterStateType} from "./AppWithReducers";
+import {AppDispatch} from "./store";
+import {CounterStateType} from "./AppWithRedux";
 
 export type IncCountActionType = {
-    type: 'INC-COUNT',
+    type: 'INC-COUNT'
     count: number
 }
 
@@ -59,7 +60,17 @@ export type ResetButtonDisabledActionType = {
     resetButtonDisabled: boolean
 }
 
-type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | EnterSetButtonTitleShowActionType | ResetButtonDisabledActionType
+export type SetButtonDisabledActionType = {
+    type: 'SET-BUTTON-DISABLED',
+    buttonSetDisabled: boolean
+}
+
+export type SetCountFromLocalStorageActionType = {
+    type: 'SET-COUNT-FROM-LOCAL-STORAGE',
+    count: number
+}
+
+export type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | EnterSetButtonTitleShowActionType | ResetButtonDisabledActionType | SetButtonDisabledActionType | SetCountFromLocalStorageActionType
 
 const initialState: CounterStateType = {
     count: 0,
@@ -77,7 +88,7 @@ const initialState: CounterStateType = {
 export const counterReducer = (state: CounterStateType = initialState, action: ActionsType): CounterStateType => {
     switch (action.type) {
         case 'INC-COUNT': {
-            return {...state, count: action.count + 1}
+            return {...state, count: action.count + 1 }
         }
         case 'CHANGE-MAX-VALUE': {
             return {...state, maxCount: action.maxCount}
@@ -105,6 +116,12 @@ export const counterReducer = (state: CounterStateType = initialState, action: A
         }
         case 'RESET-BUTTON-DISABLED': {
             return {...state, resetButtonDisabled: action.resetButtonDisabled }
+        }
+        case 'SET-BUTTON-DISABLED': {
+            return {...state, buttonSetDisabled: action.buttonSetDisabled }
+        }
+        case 'SET-COUNT-FROM-LOCAL-STORAGE': {
+            return {...state, count: action.count}
         }
         default:
             return state
@@ -140,4 +157,25 @@ export const EnterSetButtonTitleShowAC = (enterSetButton: boolean): EnterSetButt
 }
 export const ResetButtonDisabledAC = (resetButtonDisabled: boolean): ResetButtonDisabledActionType => {
     return {type: 'RESET-BUTTON-DISABLED', resetButtonDisabled}
+}
+export const SetButtonDisabledAC = (buttonSetDisabled: boolean): SetButtonDisabledActionType => {
+    return {type: 'SET-BUTTON-DISABLED', buttonSetDisabled}
+}
+export const SetCountFromLocalStorageAC = (count: number): SetCountFromLocalStorageActionType => {
+    return {type: 'SET-COUNT-FROM-LOCAL-STORAGE', count}
+}
+
+
+
+export const incCountTC = (count: number) => (dispatch: AppDispatch) => {
+    localStorage.setItem('counterValue', JSON.stringify(count + 1))
+    dispatch(IncCountAC(count))
+}
+
+export const setCountFromLocalStorageTC = () => (dispatch: AppDispatch) => {
+    let valueAsString = localStorage.getItem('counterValue')
+        if (valueAsString) {
+             let newValue = JSON.parse(valueAsString)
+             dispatch(SetCountFromLocalStorageAC(newValue))
+       }
 }

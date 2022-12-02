@@ -6,13 +6,14 @@ import {Inputs} from "./Inputs";
 import {
     ChangeMaxValueAC,
     ChangeStartValueAC,
-    EnterSetButtonTitleShowAC, IncAndResetButtonDisabledAC,
-    IncCountAC, MaxValueIsCorrectAC, ResetButtonDisabledAC,
+    EnterSetButtonTitleShowAC, IncAndResetButtonDisabledAC, incCountTC,
+    MaxValueIsCorrectAC, ResetButtonDisabledAC,
     ResetCountAC,
-    SetButtonAC, StartValueMaxValueIsCorrectAC
+    SetButtonAC, SetButtonDisabledAC, setCountFromLocalStorageTC, StartValueMaxValueIsCorrectAC
 } from "./counter-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./store";
+import {RootState} from "./store";
+
 
 export type CounterStateType = {
     count: number
@@ -31,7 +32,7 @@ function AppWithRedux() {
 
     const dispatch = useDispatch()
 
-    const counter = useSelector<AppRootStateType, CounterStateType>(state => state.counter)
+    const counter = useSelector<RootState, CounterStateType>(state => state.counter)
 
     useEffect(() => {
         if (counter.startCount >= counter.maxCount) {
@@ -85,6 +86,11 @@ function AppWithRedux() {
         }
     }, [counter.enterSetButton, counter.count, counter.maxCount, counter.startCount, counter.incorrectValue, dispatch])
 
+    useEffect(() => {
+        dispatch(setCountFromLocalStorageTC())
+        dispatch(SetButtonDisabledAC(true))
+    }, [dispatch])
+
     // useEffect(() => {
     //     let valueAsString = localStorage.getItem('counterValue')
     //     if (valueAsString) {
@@ -97,7 +103,7 @@ function AppWithRedux() {
     //     localStorage.setItem('counterValue', JSON.stringify(counter.count))
     //     setButtonSetDisabled(true)
     // }, [counter.count])
-    //
+
     // useEffect(() => {
     //     let maxValueAsString = localStorage.getItem('maxValue')
     //     if (maxValueAsString) {
@@ -124,7 +130,7 @@ function AppWithRedux() {
 
     const incCount = () => {
         if (counter.count < counter.maxCount) {
-            dispatch(IncCountAC(counter.count))
+            dispatch(incCountTC(counter.count))
         }
     }
 
