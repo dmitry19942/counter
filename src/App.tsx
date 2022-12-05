@@ -6,7 +6,7 @@ import {Inputs} from "./Inputs";
 
 function App() {
 
-    const [count, setCount] = useState(-1)
+    const [count, setCount] = useState(0)
     const [maxCount, setMaxCount] = useState(10)
     const [startCount, setStartCount] = useState(0)
 
@@ -94,7 +94,6 @@ function App() {
 
     useEffect(() => {
         localStorage.setItem('counterValue', JSON.stringify(count))
-        setButtonSetDisabled(true)
     }, [count])
 
     useEffect(() => {
@@ -150,7 +149,7 @@ function App() {
 
     return (
         <div className="App">
-            <div className='div-v'>
+            <div className='div-value'>
                 <Inputs maxValue={maxCount}
                         onChangeMaxValue={onChangeMaxValue}
                         startValue={startCount}
@@ -158,7 +157,7 @@ function App() {
                         errorMaxValue={errorMaxValue}
                         errorStartValue={errorStartValue}
                 />
-                <div className='div-b'>
+                <div className='div-button'>
                     <Button className={'button'}
                             nameButton={'set'}
                             onClick={setButton}
@@ -166,13 +165,13 @@ function App() {
                     />
                 </div>
             </div>
-            <div className='div-v'>
+            <div className='div-value'>
                 <Count value={count}
                        maxValue={maxCount}
                        incorrectValue={incorrectValue}
                        enterSetButton={enterSetButton}
                 />
-                <div className='div-b'>
+                <div className='div-button'>
                     <Button className={'button'}
                             onClick={incCount}
                             disabled={incButtonDisabled}

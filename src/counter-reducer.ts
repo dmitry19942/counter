@@ -1,28 +1,24 @@
-import {AppDispatch} from "./store";
 import {CounterStateType} from "./AppWithRedux";
 
-export type IncCountActionType = {
+// types
+type IncCountActionType = {
     type: 'INC-COUNT'
     count: number
 }
-
-export type ChangeMaxCountActionType = {
+type ChangeMaxCountActionType = {
     type: 'CHANGE-MAX-VALUE',
     maxCount: number
 }
-
-export type ChangeStartCountActionType = {
+type ChangeStartCountActionType = {
     type: 'CHANGE-START-VALUE',
     startCount: number
 }
-
-export type ResetCountActionType = {
+type ResetCountActionType = {
     type: 'RESET-COUNT',
     count: number,
     resetButtonDisabled: boolean
 }
-
-export type SetButtonActionType = {
+type SetButtonActionType = {
     type: 'SET-BUTTON',
     count: number,
     maxCount: number,
@@ -30,48 +26,34 @@ export type SetButtonActionType = {
     enterSetButton: boolean,
     resetButtonDisabled: boolean
 }
-
-export type StartValueMaxValueIsCorrectActionType = {
+type StartValueMaxValueIsCorrectActionType = {
     type: 'START-VALUE-MAX-VALUE-IS-CORRECT',
     errorMaxValue: boolean,
     errorStartValue: boolean,
     buttonSetDisabled: boolean,
     incorrectValue: boolean
 }
-
-export type MaxValueIsCorrectActionType = {
+type MaxValueIsCorrectActionType = {
     type: 'MAX-VALUE-IS-CORRECT',
     errorMaxValue: boolean
 }
-
-export type IncAndResetButtonDisabledActionType = {
+type IncAndResetButtonDisabledActionType = {
     type: 'INC-AND-RESET-BUTTON-DISABLED',
     incButtonDisabled: boolean,
     resetButtonDisabled: boolean
 }
-
-export type EnterSetButtonTitleShowActionType = {
+type EnterSetButtonTitleShowActionType = {
     type: 'ENTER-SET-BUTTON-TITLE-SHOW',
     enterSetButton: boolean
 }
-
-export type ResetButtonDisabledActionType = {
+type ResetButtonDisabledActionType = {
     type: 'RESET-BUTTON-DISABLED',
     resetButtonDisabled: boolean
 }
 
-export type SetButtonDisabledActionType = {
-    type: 'SET-BUTTON-DISABLED',
-    buttonSetDisabled: boolean
-}
+export type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | EnterSetButtonTitleShowActionType | ResetButtonDisabledActionType
 
-export type SetCountFromLocalStorageActionType = {
-    type: 'SET-COUNT-FROM-LOCAL-STORAGE',
-    count: number
-}
-
-export type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | EnterSetButtonTitleShowActionType | ResetButtonDisabledActionType | SetButtonDisabledActionType | SetCountFromLocalStorageActionType
-
+// state
 const initialState: CounterStateType = {
     count: 0,
     maxCount: 10,
@@ -117,17 +99,12 @@ export const counterReducer = (state: CounterStateType = initialState, action: A
         case 'RESET-BUTTON-DISABLED': {
             return {...state, resetButtonDisabled: action.resetButtonDisabled }
         }
-        case 'SET-BUTTON-DISABLED': {
-            return {...state, buttonSetDisabled: action.buttonSetDisabled }
-        }
-        case 'SET-COUNT-FROM-LOCAL-STORAGE': {
-            return {...state, count: action.count}
-        }
         default:
             return state
     }
 }
 
+// actions
 export const IncCountAC = (count: number): IncCountActionType => {
     return {type: 'INC-COUNT', count}
 }
@@ -158,24 +135,4 @@ export const EnterSetButtonTitleShowAC = (enterSetButton: boolean): EnterSetButt
 export const ResetButtonDisabledAC = (resetButtonDisabled: boolean): ResetButtonDisabledActionType => {
     return {type: 'RESET-BUTTON-DISABLED', resetButtonDisabled}
 }
-export const SetButtonDisabledAC = (buttonSetDisabled: boolean): SetButtonDisabledActionType => {
-    return {type: 'SET-BUTTON-DISABLED', buttonSetDisabled}
-}
-export const SetCountFromLocalStorageAC = (count: number): SetCountFromLocalStorageActionType => {
-    return {type: 'SET-COUNT-FROM-LOCAL-STORAGE', count}
-}
 
-
-
-export const incCountTC = (count: number) => (dispatch: AppDispatch) => {
-    localStorage.setItem('counterValue', JSON.stringify(count + 1))
-    dispatch(IncCountAC(count))
-}
-
-export const setCountFromLocalStorageTC = () => (dispatch: AppDispatch) => {
-    let valueAsString = localStorage.getItem('counterValue')
-        if (valueAsString) {
-             let newValue = JSON.parse(valueAsString)
-             dispatch(SetCountFromLocalStorageAC(newValue))
-       }
-}

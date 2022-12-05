@@ -1,16 +1,21 @@
-import {AnyAction, applyMiddleware, combineReducers, createStore} from "redux";
-import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
+import {combineReducers, createStore} from "redux";
 import {counterReducer} from "./counter-reducer";
+import {loadState, saveState} from "./localStorage";
 
 
 const rootReducer = combineReducers({
     counter: counterReducer
 })
 
-export const store = createStore(rootReducer, applyMiddleware(thunk))
+export const store = createStore(rootReducer, loadState())
+
+store.subscribe(() => {
+    saveState({
+      counter: store.getState().counter
+    })
+})
 
 export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>
+
 // @ts-ignore
 window.store = store

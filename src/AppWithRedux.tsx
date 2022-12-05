@@ -6,15 +6,15 @@ import {Inputs} from "./Inputs";
 import {
     ChangeMaxValueAC,
     ChangeStartValueAC,
-    EnterSetButtonTitleShowAC, IncAndResetButtonDisabledAC, incCountTC,
+    EnterSetButtonTitleShowAC, IncAndResetButtonDisabledAC, IncCountAC,
     MaxValueIsCorrectAC, ResetButtonDisabledAC,
     ResetCountAC,
-    SetButtonAC, SetButtonDisabledAC, setCountFromLocalStorageTC, StartValueMaxValueIsCorrectAC
+    SetButtonAC, StartValueMaxValueIsCorrectAC
 } from "./counter-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "./store";
 
-
+// types
 export type CounterStateType = {
     count: number
     maxCount: number
@@ -28,6 +28,7 @@ export type CounterStateType = {
     resetButtonDisabled: boolean
 }
 
+// component
 function AppWithRedux() {
 
     const dispatch = useDispatch()
@@ -86,51 +87,10 @@ function AppWithRedux() {
         }
     }, [counter.enterSetButton, counter.count, counter.maxCount, counter.startCount, counter.incorrectValue, dispatch])
 
-    useEffect(() => {
-        dispatch(setCountFromLocalStorageTC())
-        dispatch(SetButtonDisabledAC(true))
-    }, [dispatch])
-
-    // useEffect(() => {
-    //     let valueAsString = localStorage.getItem('counterValue')
-    //     if (valueAsString) {
-    //         let newValue = JSON.parse(valueAsString)
-    //         setCount(newValue)
-    //     }
-    // }, [])
-    //
-    // useEffect(() => {
-    //     localStorage.setItem('counterValue', JSON.stringify(counter.count))
-    //     setButtonSetDisabled(true)
-    // }, [counter.count])
-
-    // useEffect(() => {
-    //     let maxValueAsString = localStorage.getItem('maxValue')
-    //     if (maxValueAsString) {
-    //         let newMaxValue = JSON.parse(maxValueAsString)
-    //         setMaxCount(newMaxValue)
-    //     }
-    // }, [])
-    //
-    // useEffect(() => {
-    //     localStorage.setItem('maxValue', JSON.stringify(counter.maxCount))
-    // }, [counter.maxCount])
-    //
-    // useEffect(() => {
-    //     let startValueAsString = localStorage.getItem('startValue')
-    //     if (startValueAsString) {
-    //         let newStartValue = JSON.parse(startValueAsString)
-    //         setStartCount(newStartValue)
-    //     }
-    // }, [])
-    //
-    // useEffect(() => {
-    //     localStorage.setItem('startValue', JSON.stringify(counter.startCount))
-    // }, [counter.startCount])
 
     const incCount = () => {
         if (counter.count < counter.maxCount) {
-            dispatch(incCountTC(counter.count))
+            dispatch(IncCountAC(counter.count))
         }
     }
 
@@ -152,7 +112,7 @@ function AppWithRedux() {
 
     return (
         <div className="App">
-            <div className='div-v'>
+            <div className='div-value'>
                 <Inputs maxValue={counter.maxCount}
                         onChangeMaxValue={onChangeMaxValue}
                         startValue={counter.startCount}
@@ -160,7 +120,7 @@ function AppWithRedux() {
                         errorMaxValue={counter.errorMaxValue}
                         errorStartValue={counter.errorStartValue}
                 />
-                <div className='div-b'>
+                <div className='div-button'>
                     <Button className={'button'}
                             nameButton={'set'}
                             onClick={setButton}
@@ -168,13 +128,13 @@ function AppWithRedux() {
                     />
                 </div>
             </div>
-            <div className='div-v'>
+            <div className='div-value'>
                 <Count value={counter.count}
                        maxValue={counter.maxCount}
                        incorrectValue={counter.incorrectValue}
                        enterSetButton={counter.enterSetButton}
                 />
-                <div className='div-b'>
+                <div className='div-button'>
                     <Button className={'button'}
                             onClick={incCount}
                             disabled={counter.incButtonDisabled}

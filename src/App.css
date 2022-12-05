@@ -2,7 +2,7 @@
   text-align: center;
   padding: 30px;
   display: flex;
-  }
+}
 
 .span {
   background-color: aqua;
@@ -16,6 +16,30 @@
   border-radius: 10px;
   border: black 2px solid;
   margin: 15px;
+}
+
+.span-max-value {
+  background-color: aqua;
+  height: 130px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 60px;
+  color: white;
+  border-radius: 10px;
+  border: black 2px solid;
+  margin: 15px;
+}
+
+.span-count {
+  font-size: 70px;
+  color: red;
+}
+
+.span-text {
+  font-size: 25px;
+  color: red;
 }
 
 .span-v {
@@ -79,7 +103,16 @@
   border: none;
 }
 
-.div-v {
+.button-on-key-down {
+  background-color: white;
+  width: auto;
+  font-size: 30px;
+  border-radius: 10px;
+  font-weight:bold;
+  border: none;
+}
+
+.div-value {
   border-radius: 10px;
   border: 2px solid black;
   width: 355px;
@@ -87,7 +120,7 @@
   padding-bottom: 15px;
 }
 
-.div-b {
+.div-button {
   border-radius: 10px;
   border: 2px solid black;
   width: 310px;

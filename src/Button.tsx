@@ -9,6 +9,6 @@ export type ButtonPropsType = {
 
 export function Button (props: ButtonPropsType) {
     return (
-            <button className={props.className} onClick={props.onClick} disabled={props.disabled}>{props.nameButton}</button>
+            <button className={props.className} onClick={props.onClick} disabled={props.disabled}>{props.nameButton} </button>
     )
 }
