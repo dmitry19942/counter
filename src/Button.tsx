@@ -1,6 +1,7 @@
 import React from "react";
 
 export type ButtonPropsType = {
+    id: string
     className: 'button' | 'button-v'
     onClick: () => void
     disabled: boolean
@@ -9,6 +10,6 @@ export type ButtonPropsType = {
 
 export function Button (props: ButtonPropsType) {
     return (
-            <button className={props.className} onClick={props.onClick} disabled={props.disabled}>{props.nameButton} </button>
+            <button id={props.id} className={props.className} onClick={props.onClick} disabled={props.disabled}>{props.nameButton} </button>
     )
 }

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react';
 import './App.css';
 import {Count} from "./Count";
 import {Button} from "./Button";
@@ -20,7 +20,12 @@ function App() {
 
 
     useEffect(() => {
-        if (startCount >= maxCount) {
+        if (startCount === null) {
+            setErrorMaxValue(true)
+            setErrorStartValue(true)
+            setButtonSetDisabled(true)
+            setIncorrectValue(true)
+        } else if (startCount >= maxCount) {
             setErrorMaxValue(true)
             setErrorStartValue(true)
             setButtonSetDisabled(true)
@@ -140,11 +145,31 @@ function App() {
     }
 
     const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
+        if (!e.currentTarget.value) {
+            setErrorMaxValue(true)
+            setErrorStartValue(true)
+            setButtonSetDisabled(true)
+            setIncorrectValue(true)
+        }
         setMaxCount(parseInt(e.currentTarget.value))
     }
 
     const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
+        if (!e.currentTarget.value) {
+            setErrorMaxValue(true)
+            setErrorStartValue(true)
+            setButtonSetDisabled(true)
+            setIncorrectValue(true)
+        }
         setStartCount(parseInt(e.currentTarget.value))
+    }
+
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        const focusButtonSet = document.getElementById('button-set')
+        if (e.key === 'Enter' && focusButtonSet) {
+            setButton()
+            focusButtonSet.focus()
+        }
     }
 
     return (
@@ -156,9 +181,11 @@ function App() {
                         onChangeStartValue={onChangeStartValue}
                         errorMaxValue={errorMaxValue}
                         errorStartValue={errorStartValue}
+                        onKeyPress={onKeyPressHandler}
                 />
                 <div className='div-button'>
-                    <Button className={'button'}
+                    <Button id={'button-set'}
+                            className={'button'}
                             nameButton={'set'}
                             onClick={setButton}
                             disabled={buttonSetDisabled}
@@ -172,12 +199,14 @@ function App() {
                        enterSetButton={enterSetButton}
                 />
                 <div className='div-button'>
-                    <Button className={'button'}
+                    <Button id={'button-inc'}
+                            className={'button'}
                             onClick={incCount}
                             disabled={incButtonDisabled}
                             nameButton={'inc'}
                     />
-                    <Button className={'button-v'}
+                    <Button id={'button-reset'}
+                            className={'button-v'}
                             onClick={resetCount}
                             disabled={resetButtonDisabled}
                             nameButton={'reset'}

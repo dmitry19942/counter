@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useEffect} from 'react';
 import './App.css';
 import {Count} from "./Count";
 import {Button} from "./Button";
@@ -36,7 +36,9 @@ function AppWithRedux() {
     const counter = useSelector<RootState, CounterStateType>(state => state.counter)
 
     useEffect(() => {
-        if (counter.startCount >= counter.maxCount) {
+        if (counter.startCount === null) {
+            dispatch(StartValueMaxValueIsCorrectAC(true, true, true, true))
+        } else if (counter.startCount >= counter.maxCount) {
             dispatch(StartValueMaxValueIsCorrectAC(true, true, true, true))
         } else if (counter.startCount < 0) {
             dispatch(StartValueMaxValueIsCorrectAC(false, true, true, true))
@@ -47,11 +49,9 @@ function AppWithRedux() {
 
     useEffect(() => {
         if (counter.maxCount <= 0) {
-            const action = MaxValueIsCorrectAC(true)
-            dispatch(action)
+            dispatch(MaxValueIsCorrectAC(true))
         } else if (counter.maxCount > 0 && counter.maxCount > counter.startCount) {
-            const action = MaxValueIsCorrectAC(false)
-            dispatch(action)
+            dispatch(MaxValueIsCorrectAC(false))
         }
     }, [counter.maxCount, counter.startCount, dispatch])
 
@@ -103,11 +103,25 @@ function AppWithRedux() {
     }
 
     const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
+        if (!e.currentTarget.value) {
+            dispatch(StartValueMaxValueIsCorrectAC(true, true, true, true))
+        }
         dispatch(ChangeMaxValueAC(parseInt(e.currentTarget.value)))
     }
 
     const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
+        if (!e.currentTarget.value) {
+            dispatch(StartValueMaxValueIsCorrectAC(true, true, true, true))
+        }
         dispatch(ChangeStartValueAC(parseInt(e.currentTarget.value)))
+    }
+
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        const focusButtonSet = document.getElementById('button-set')
+        if (e.key === 'Enter' && focusButtonSet) {
+            setButton()
+            focusButtonSet.focus()
+        }
     }
 
     return (
@@ -119,9 +133,11 @@ function AppWithRedux() {
                         onChangeStartValue={onChangeStartValue}
                         errorMaxValue={counter.errorMaxValue}
                         errorStartValue={counter.errorStartValue}
+                        onKeyPress={onKeyPressHandler}
                 />
                 <div className='div-button'>
-                    <Button className={'button'}
+                    <Button id={'button-set'}
+                            className={'button'}
                             nameButton={'set'}
                             onClick={setButton}
                             disabled={counter.buttonSetDisabled}
@@ -135,12 +151,14 @@ function AppWithRedux() {
                        enterSetButton={counter.enterSetButton}
                 />
                 <div className='div-button'>
-                    <Button className={'button'}
+                    <Button id={'button-inc'}
+                            className={'button'}
                             onClick={incCount}
                             disabled={counter.incButtonDisabled}
                             nameButton={'inc'}
                     />
-                    <Button className={'button-v'}
+                    <Button id={'button-reset'}
+                            className={'button-v'}
                             onClick={resetCount}
                             disabled={counter.resetButtonDisabled}
                             nameButton={'reset'}
