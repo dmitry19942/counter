@@ -17,6 +17,7 @@ function App() {
     const [incorrectValue, setIncorrectValue] = useState<boolean>(false)
     const [incButtonDisabled, setIncButtonDisabled] = useState<boolean>(false)
     const [resetButtonDisabled, setResetButtonDisabled] = useState<boolean>(false)
+    const [activeButtonInc, setActiveButtonInc] = useState<boolean>(false)
 
 
     useEffect(() => {
@@ -125,9 +126,15 @@ function App() {
         localStorage.setItem('startValue', JSON.stringify(startCount))
     }, [startCount])
 
+    const activeButtonIncChanged = () => {
+        setActiveButtonInc(false)
+    }
+
     const incCount = () => {
         if (count < maxCount) {
             setCount(count + 1)
+            setActiveButtonInc(true)
+            setTimeout(activeButtonIncChanged, 100)
         }
     }
 
@@ -200,7 +207,7 @@ function App() {
                 />
                 <div className='div-button'>
                     <Button id={'button-inc'}
-                            className={'button'}
+                            className={activeButtonInc ? 'button-active' : 'button'}
                             onClick={incCount}
                             disabled={incButtonDisabled}
                             nameButton={'inc'}

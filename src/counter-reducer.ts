@@ -50,8 +50,12 @@ type ResetButtonDisabledActionType = {
     type: 'RESET-BUTTON-DISABLED',
     resetButtonDisabled: boolean
 }
+type ActiveButtonIncActionType = {
+    type: 'ACTIVE-BUTTON-INC',
+    activeButtonInc: boolean
+}
 
-export type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | EnterSetButtonTitleShowActionType | ResetButtonDisabledActionType
+export type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | EnterSetButtonTitleShowActionType | ResetButtonDisabledActionType | ActiveButtonIncActionType
 
 // state
 const initialState: CounterStateType = {
@@ -64,7 +68,8 @@ const initialState: CounterStateType = {
     enterSetButton: false,
     incorrectValue: false,
     incButtonDisabled: false,
-    resetButtonDisabled: false
+    resetButtonDisabled: false,
+    activeButtonInc: false
 }
 
 export const counterReducer = (state: CounterStateType = initialState, action: ActionsType): CounterStateType => {
@@ -97,7 +102,10 @@ export const counterReducer = (state: CounterStateType = initialState, action: A
             return {...state, enterSetButton: action.enterSetButton}
         }
         case 'RESET-BUTTON-DISABLED': {
-            return {...state, resetButtonDisabled: action.resetButtonDisabled }
+            return {...state, resetButtonDisabled: action.resetButtonDisabled}
+        }
+        case 'ACTIVE-BUTTON-INC': {
+            return {...state, activeButtonInc: action.activeButtonInc}
         }
         default:
             return state
@@ -134,5 +142,8 @@ export const EnterSetButtonTitleShowAC = (enterSetButton: boolean): EnterSetButt
 }
 export const ResetButtonDisabledAC = (resetButtonDisabled: boolean): ResetButtonDisabledActionType => {
     return {type: 'RESET-BUTTON-DISABLED', resetButtonDisabled}
+}
+export const ActiveButtonIncAC = (activeButtonInc: boolean): ActiveButtonIncActionType => {
+    return {type: 'ACTIVE-BUTTON-INC', activeButtonInc}
 }
 

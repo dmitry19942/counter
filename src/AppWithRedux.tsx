@@ -4,6 +4,7 @@ import {Count} from "./Count";
 import {Button} from "./Button";
 import {Inputs} from "./Inputs";
 import {
+    ActiveButtonIncAC,
     ChangeMaxValueAC,
     ChangeStartValueAC,
     EnterSetButtonTitleShowAC, IncAndResetButtonDisabledAC, IncCountAC,
@@ -26,6 +27,7 @@ export type CounterStateType = {
     incorrectValue: boolean
     incButtonDisabled: boolean
     resetButtonDisabled: boolean
+    activeButtonInc: boolean
 }
 
 // component
@@ -88,9 +90,15 @@ function AppWithRedux() {
     }, [counter.enterSetButton, counter.count, counter.maxCount, counter.startCount, counter.incorrectValue, dispatch])
 
 
+    const activeButtonInc = () => {
+        dispatch(ActiveButtonIncAC(false))
+    }
+
     const incCount = () => {
         if (counter.count < counter.maxCount) {
             dispatch(IncCountAC(counter.count))
+            dispatch(ActiveButtonIncAC(true))
+            setTimeout(activeButtonInc, 100)
         }
     }
 
@@ -152,7 +160,7 @@ function AppWithRedux() {
                 />
                 <div className='div-button'>
                     <Button id={'button-inc'}
-                            className={'button'}
+                            className={counter.activeButtonInc ? 'button-active' : 'button'}
                             onClick={incCount}
                             disabled={counter.incButtonDisabled}
                             nameButton={'inc'}

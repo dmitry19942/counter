@@ -93,20 +93,20 @@
   border: none;
 }
 
-.button-v {
-  background-color: aqua;
+.button-active {
+  background-color: white;
   width: auto;
   font-size: 30px;
-  margin-left: 50px;
   border-radius: 10px;
   font-weight:bold;
   border: none;
 }
 
-.button-on-key-down {
-  background-color: white;
+.button-v {
+  background-color: aqua;
   width: auto;
   font-size: 30px;
+  margin-left: 50px;
   border-radius: 10px;
   font-weight:bold;
   border: none;

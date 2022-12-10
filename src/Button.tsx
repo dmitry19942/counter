@@ -2,7 +2,7 @@ import React from "react";
 
 export type ButtonPropsType = {
     id: string
-    className: 'button' | 'button-v'
+    className: 'button' | 'button-v' | 'button-active'
     onClick: () => void
     disabled: boolean
     nameButton: string
