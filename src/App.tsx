@@ -18,6 +18,8 @@ function App() {
     const [incButtonDisabled, setIncButtonDisabled] = useState<boolean>(false)
     const [resetButtonDisabled, setResetButtonDisabled] = useState<boolean>(false)
     const [activeButtonInc, setActiveButtonInc] = useState<boolean>(false)
+    const [timerId, setTimerId] = useState<any>(null)
+    const [autoDisabled, setAutoDisabled] = useState<boolean>(false)
 
 
     useEffect(() => {
@@ -55,12 +57,15 @@ function App() {
         if (!incorrectValue && !errorStartValue && !errorMaxValue) {
             setIncButtonDisabled(false)
             setResetButtonDisabled(false)
+            setAutoDisabled(false)
         } else if (incorrectValue) {
             setIncButtonDisabled(true)
             setResetButtonDisabled(true)
+            setAutoDisabled(true)
         } else if (errorStartValue || errorMaxValue) {
             setIncButtonDisabled(true)
             setResetButtonDisabled(true)
+            setAutoDisabled(true)
         }
     }, [incorrectValue, errorStartValue, errorMaxValue])
 
@@ -76,6 +81,7 @@ function App() {
         if (enterSetButton) {
             setIncButtonDisabled(true)
             setResetButtonDisabled(true)
+            setAutoDisabled(true)
         } else if (count === maxCount && !incorrectValue) {
             setIncButtonDisabled(true)
             setResetButtonDisabled(false)
@@ -83,8 +89,8 @@ function App() {
             setIncButtonDisabled(false)
             setResetButtonDisabled(false)
         } else if (count === startCount && !incorrectValue) {
-            setResetButtonDisabled(true)
             setIncButtonDisabled(false)
+            setResetButtonDisabled(true)
         } else if (count !== startCount && !incorrectValue) {
             setResetButtonDisabled(false)
         }
@@ -126,6 +132,20 @@ function App() {
         localStorage.setItem('startValue', JSON.stringify(startCount))
     }, [startCount])
 
+    useEffect(() => {
+        autoDisabled && setTimerId(setTimeout(() => {
+            if (count < maxCount) {
+                setCount(count + 1);
+            }
+        }, 1000))
+
+    },[count, maxCount, autoDisabled]);
+
+    const autoIncCount = () => {
+        timerId && clearTimeout(timerId)
+        setAutoDisabled(!autoDisabled)
+    }
+
     const activeButtonIncChanged = () => {
         setActiveButtonInc(false)
     }
@@ -141,6 +161,8 @@ function App() {
     const resetCount = () => {
         setCount(startCount)
         setResetButtonDisabled(true)
+        timerId && clearTimeout(timerId)
+        setAutoDisabled(false)
     }
 
     const setButton = () => {
@@ -149,6 +171,8 @@ function App() {
         setButtonSetDisabled(true)
         setEnterSetButton(false)
         setResetButtonDisabled(true)
+        timerId && clearTimeout(timerId)
+        setAutoDisabled(false)
     }
 
     const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
@@ -217,6 +241,12 @@ function App() {
                             onClick={resetCount}
                             disabled={resetButtonDisabled}
                             nameButton={'reset'}
+                    />
+                    <Button id={'button-auto'}
+                            className={'button-v'}
+                            onClick={autoIncCount}
+                            disabled={autoDisabled}
+                            nameButton={'auto'}
                     />
                 </div>
             </div>
