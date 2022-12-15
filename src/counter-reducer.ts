@@ -1,4 +1,7 @@
 import {CounterStateType} from "./AppWithRedux";
+import {Dispatch} from "redux";
+import {RootState} from "./store";
+import {SetStateAction} from "react";
 
 // types
 type IncCountActionType = {
@@ -54,8 +57,18 @@ type ActiveButtonIncActionType = {
     type: 'ACTIVE-BUTTON-INC',
     activeButtonInc: boolean
 }
+type SetTimerIdActionType = {
+    type: 'SET-TIMER-ID',
+    timerId: SetStateAction<any>
+}
+type ToggleAutoButtonDisabledActionType = {
+    type: 'TOGGLE-AUTO-BUTTON-DISABLED'
+}
+type ResetAutoButtonDisabledActionType = {
+    type: 'RESET-AUTO-BUTTON-DISABLED'
+}
 
-export type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | EnterSetButtonTitleShowActionType | ResetButtonDisabledActionType | ActiveButtonIncActionType
+export type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | EnterSetButtonTitleShowActionType | ResetButtonDisabledActionType | ActiveButtonIncActionType | SetTimerIdActionType | ToggleAutoButtonDisabledActionType | ResetAutoButtonDisabledActionType
 
 // state
 const initialState: CounterStateType = {
@@ -69,7 +82,9 @@ const initialState: CounterStateType = {
     incorrectValue: false,
     incButtonDisabled: false,
     resetButtonDisabled: false,
-    activeButtonInc: false
+    activeButtonInc: false,
+    autoButtonDisabled: false,
+    timerId: 0
 }
 
 export const counterReducer = (state: CounterStateType = initialState, action: ActionsType): CounterStateType => {
@@ -106,6 +121,15 @@ export const counterReducer = (state: CounterStateType = initialState, action: A
         }
         case 'ACTIVE-BUTTON-INC': {
             return {...state, activeButtonInc: action.activeButtonInc}
+        }
+        case 'SET-TIMER-ID': {
+            return {...state, timerId: action.timerId}
+        }
+        case 'TOGGLE-AUTO-BUTTON-DISABLED': {
+            return {...state, autoButtonDisabled: !state.autoButtonDisabled}
+        }
+        case 'RESET-AUTO-BUTTON-DISABLED': {
+            return {...state, autoButtonDisabled: false}
         }
         default:
             return state
@@ -145,5 +169,25 @@ export const ResetButtonDisabledAC = (resetButtonDisabled: boolean): ResetButton
 }
 export const ActiveButtonIncAC = (activeButtonInc: boolean): ActiveButtonIncActionType => {
     return {type: 'ACTIVE-BUTTON-INC', activeButtonInc}
+}
+export const SetTimerIdAC = (timerId: SetStateAction<any>): SetTimerIdActionType => {
+    return {type: 'SET-TIMER-ID', timerId}
+}
+export const ToggleAutoButtonDisabledAC = (): ToggleAutoButtonDisabledActionType => {
+    return {type: 'TOGGLE-AUTO-BUTTON-DISABLED'}
+}
+export const ResetAutoButtonDisabledAC = (): ResetAutoButtonDisabledActionType => {
+    return {type: 'RESET-AUTO-BUTTON-DISABLED'}
+}
+
+
+// thunks
+export const toggleAutoModeCounterTC = () => (dispatch: Dispatch, getState: () => RootState) => {
+    let {count, maxCount, autoButtonDisabled} = getState().counter
+    autoButtonDisabled && dispatch(SetTimerIdAC(setTimeout(() => {
+        if (count < maxCount ) {
+            dispatch(IncCountAC(count));
+        }
+    }, 1000)))
 }
 

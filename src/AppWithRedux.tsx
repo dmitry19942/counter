@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useEffect} from 'react';
+import React, {ChangeEvent, KeyboardEvent, SetStateAction, useEffect} from 'react';
 import './App.css';
 import {Count} from "./Count";
 import {Button} from "./Button";
@@ -8,9 +8,9 @@ import {
     ChangeMaxValueAC,
     ChangeStartValueAC,
     EnterSetButtonTitleShowAC, IncAndResetButtonDisabledAC, IncCountAC,
-    MaxValueIsCorrectAC, ResetButtonDisabledAC,
+    MaxValueIsCorrectAC, ResetAutoButtonDisabledAC, ResetButtonDisabledAC,
     ResetCountAC,
-    SetButtonAC, StartValueMaxValueIsCorrectAC
+    SetButtonAC, StartValueMaxValueIsCorrectAC, ToggleAutoButtonDisabledAC, toggleAutoModeCounterTC
 } from "./counter-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "./store";
@@ -28,6 +28,8 @@ export type CounterStateType = {
     incButtonDisabled: boolean
     resetButtonDisabled: boolean
     activeButtonInc: boolean
+    autoButtonDisabled: boolean
+    timerId: SetStateAction<any>
 }
 
 // component
@@ -89,6 +91,10 @@ function AppWithRedux() {
         }
     }, [counter.enterSetButton, counter.count, counter.maxCount, counter.startCount, counter.incorrectValue, dispatch])
 
+    useEffect(() => {
+        dispatch(toggleAutoModeCounterTC())
+    }, [counter.count, counter.autoButtonDisabled, dispatch])
+
 
     const activeButtonInc = () => {
         dispatch(ActiveButtonIncAC(false))
@@ -103,7 +109,9 @@ function AppWithRedux() {
     }
 
     const resetCount = () => {
+        counter.timerId && clearTimeout(counter.timerId)
         dispatch(ResetCountAC(counter.startCount, counter.resetButtonDisabled))
+        dispatch(ResetAutoButtonDisabledAC())
     }
 
     const setButton = () => {
@@ -130,6 +138,11 @@ function AppWithRedux() {
             setButton()
             focusButtonSet.focus()
         }
+    }
+
+    const autoIncCount = () => {
+        counter.timerId && clearTimeout(counter.timerId)
+        dispatch(ToggleAutoButtonDisabledAC())
     }
 
     return (
@@ -170,6 +183,12 @@ function AppWithRedux() {
                             onClick={resetCount}
                             disabled={counter.resetButtonDisabled}
                             nameButton={'reset'}
+                    />
+                    <Button id={'button-auto'}
+                            className={'button-v'}
+                            onClick={autoIncCount}
+                            disabled={counter.autoButtonDisabled}
+                            nameButton={'auto'}
                     />
                 </div>
             </div>
