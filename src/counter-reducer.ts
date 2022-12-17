@@ -45,6 +45,12 @@ type IncAndResetButtonDisabledActionType = {
     incButtonDisabled: boolean,
     resetButtonDisabled: boolean
 }
+type IncAndResetAndAutoButtonDisabledActionType = {
+    type: 'INC-AND-RESET-AND-AUTO-BUTTON-DISABLED',
+    incButtonDisabled: boolean,
+    resetButtonDisabled: boolean,
+    autoButtonDisabled: boolean
+}
 type EnterSetButtonTitleShowActionType = {
     type: 'ENTER-SET-BUTTON-TITLE-SHOW',
     enterSetButton: boolean
@@ -67,8 +73,11 @@ type ToggleAutoButtonDisabledActionType = {
 type ResetAutoButtonDisabledActionType = {
     type: 'RESET-AUTO-BUTTON-DISABLED'
 }
+type IncButtonDisabledActionType = {
+    type: 'INC-BUTTON-DISABLED'
+}
 
-export type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | EnterSetButtonTitleShowActionType | ResetButtonDisabledActionType | ActiveButtonIncActionType | SetTimerIdActionType | ToggleAutoButtonDisabledActionType | ResetAutoButtonDisabledActionType
+export type ActionsType = IncCountActionType | ChangeMaxCountActionType | ChangeStartCountActionType | ResetCountActionType | SetButtonActionType | StartValueMaxValueIsCorrectActionType | MaxValueIsCorrectActionType | IncAndResetButtonDisabledActionType | IncAndResetAndAutoButtonDisabledActionType | EnterSetButtonTitleShowActionType | ResetButtonDisabledActionType | ActiveButtonIncActionType | SetTimerIdActionType | ToggleAutoButtonDisabledActionType | ResetAutoButtonDisabledActionType | IncButtonDisabledActionType
 
 // state
 const initialState: CounterStateType = {
@@ -111,7 +120,10 @@ export const counterReducer = (state: CounterStateType = initialState, action: A
             return {...state, errorMaxValue: action.errorMaxValue}
         }
         case 'INC-AND-RESET-BUTTON-DISABLED': {
-            return {...state, incButtonDisabled: action.incButtonDisabled, resetButtonDisabled: action.resetButtonDisabled }
+            return {...state, incButtonDisabled: action.incButtonDisabled, resetButtonDisabled: action.resetButtonDisabled}
+        }
+        case 'INC-AND-RESET-AND-AUTO-BUTTON-DISABLED': {
+            return {...state, incButtonDisabled: action.incButtonDisabled, resetButtonDisabled: action.resetButtonDisabled, autoButtonDisabled: action.autoButtonDisabled}
         }
         case 'ENTER-SET-BUTTON-TITLE-SHOW': {
             return {...state, enterSetButton: action.enterSetButton}
@@ -130,6 +142,9 @@ export const counterReducer = (state: CounterStateType = initialState, action: A
         }
         case 'RESET-AUTO-BUTTON-DISABLED': {
             return {...state, autoButtonDisabled: false}
+        }
+        case 'INC-BUTTON-DISABLED': {
+            return {...state, incButtonDisabled: true}
         }
         default:
             return state
@@ -161,6 +176,9 @@ export const MaxValueIsCorrectAC = (errorMaxValue: boolean): MaxValueIsCorrectAc
 export const IncAndResetButtonDisabledAC = (incButtonDisabled: boolean, resetButtonDisabled: boolean): IncAndResetButtonDisabledActionType => {
     return {type: 'INC-AND-RESET-BUTTON-DISABLED', incButtonDisabled, resetButtonDisabled}
 }
+export const IncAndResetAndAutoButtonDisabledAC = (incButtonDisabled: boolean, resetButtonDisabled: boolean, autoButtonDisabled: boolean): IncAndResetAndAutoButtonDisabledActionType => {
+    return {type: 'INC-AND-RESET-AND-AUTO-BUTTON-DISABLED', incButtonDisabled, resetButtonDisabled, autoButtonDisabled}
+}
 export const EnterSetButtonTitleShowAC = (enterSetButton: boolean): EnterSetButtonTitleShowActionType => {
     return {type: 'ENTER-SET-BUTTON-TITLE-SHOW', enterSetButton}
 }
@@ -178,6 +196,9 @@ export const ToggleAutoButtonDisabledAC = (): ToggleAutoButtonDisabledActionType
 }
 export const ResetAutoButtonDisabledAC = (): ResetAutoButtonDisabledActionType => {
     return {type: 'RESET-AUTO-BUTTON-DISABLED'}
+}
+export const IncButtonDisabledAC = (): IncButtonDisabledActionType => {
+    return {type: 'INC-BUTTON-DISABLED'}
 }
 
 

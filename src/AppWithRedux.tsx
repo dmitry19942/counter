@@ -7,10 +7,19 @@ import {
     ActiveButtonIncAC,
     ChangeMaxValueAC,
     ChangeStartValueAC,
-    EnterSetButtonTitleShowAC, IncAndResetButtonDisabledAC, IncCountAC,
-    MaxValueIsCorrectAC, ResetAutoButtonDisabledAC, ResetButtonDisabledAC,
+    EnterSetButtonTitleShowAC,
+    IncAndResetAndAutoButtonDisabledAC,
+    IncAndResetButtonDisabledAC,
+    IncButtonDisabledAC,
+    IncCountAC,
+    MaxValueIsCorrectAC,
+    ResetAutoButtonDisabledAC,
+    ResetButtonDisabledAC,
     ResetCountAC,
-    SetButtonAC, StartValueMaxValueIsCorrectAC, ToggleAutoButtonDisabledAC, toggleAutoModeCounterTC
+    SetButtonAC,
+    StartValueMaxValueIsCorrectAC,
+    ToggleAutoButtonDisabledAC,
+    toggleAutoModeCounterTC
 } from "./counter-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "./store";
@@ -61,11 +70,11 @@ function AppWithRedux() {
 
     useEffect(() => {
         if (!counter.incorrectValue && !counter.errorStartValue && !counter.errorMaxValue) {
-            dispatch(IncAndResetButtonDisabledAC(false, false))
+            dispatch(IncAndResetAndAutoButtonDisabledAC(false, false, false))
         } else if (counter.incorrectValue) {
-            dispatch(IncAndResetButtonDisabledAC(true, true))
+            dispatch(IncAndResetAndAutoButtonDisabledAC(true, true, true))
         } else if (counter.errorStartValue || counter.errorMaxValue) {
-            dispatch(IncAndResetButtonDisabledAC(true, true))
+            dispatch(IncAndResetAndAutoButtonDisabledAC(true, true, true))
         }
     }, [counter.incorrectValue, counter.errorStartValue, counter.errorMaxValue, dispatch])
 
@@ -79,10 +88,10 @@ function AppWithRedux() {
 
     useEffect(() => {
         if (counter.enterSetButton) {
-            dispatch(IncAndResetButtonDisabledAC(true, true))
+            dispatch(IncAndResetAndAutoButtonDisabledAC(true, true, true))
         } else if (counter.count === counter.maxCount && !counter.incorrectValue) {
-            dispatch(IncAndResetButtonDisabledAC(true, false))
-        } else if (counter.count !== counter.maxCount && counter.count !== counter.startCount && !counter.incorrectValue) {
+            dispatch(IncAndResetAndAutoButtonDisabledAC(true, false, true))
+        } else if (counter.count !== counter.maxCount && counter.count !== counter.startCount && !counter.incorrectValue && !counter.autoButtonDisabled) {
             dispatch(IncAndResetButtonDisabledAC(false, false))
         } else if (counter.count === counter.startCount && !counter.incorrectValue) {
             dispatch(IncAndResetButtonDisabledAC(false, true))
@@ -94,6 +103,12 @@ function AppWithRedux() {
     useEffect(() => {
         dispatch(toggleAutoModeCounterTC())
     }, [counter.count, counter.autoButtonDisabled, dispatch])
+
+    useEffect(() => {
+        if (counter.autoButtonDisabled) {
+            dispatch(IncButtonDisabledAC())
+        }
+    }, [counter.autoButtonDisabled, dispatch])
 
 
     const activeButtonInc = () => {
@@ -115,7 +130,9 @@ function AppWithRedux() {
     }
 
     const setButton = () => {
+        counter.timerId && clearTimeout(counter.timerId)
         dispatch(SetButtonAC(counter.startCount, counter.maxCount, counter.buttonSetDisabled, counter.enterSetButton, counter.resetButtonDisabled))
+        dispatch(ResetAutoButtonDisabledAC())
     }
 
     const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {

@@ -85,7 +85,8 @@ function App() {
         } else if (count === maxCount && !incorrectValue) {
             setIncButtonDisabled(true)
             setResetButtonDisabled(false)
-        } else if (count !== maxCount && count !== startCount && !incorrectValue) {
+            setAutoDisabled(true)
+        } else if (count !== maxCount && count !== startCount && !incorrectValue && !autoDisabled) {
             setIncButtonDisabled(false)
             setResetButtonDisabled(false)
         } else if (count === startCount && !incorrectValue) {
@@ -94,7 +95,7 @@ function App() {
         } else if (count !== startCount && !incorrectValue) {
             setResetButtonDisabled(false)
         }
-    }, [enterSetButton, count, maxCount, startCount, incorrectValue])
+    }, [enterSetButton, count, maxCount, startCount, incorrectValue, autoDisabled])
 
     useEffect(() => {
         let valueAsString = localStorage.getItem('counterValue')
